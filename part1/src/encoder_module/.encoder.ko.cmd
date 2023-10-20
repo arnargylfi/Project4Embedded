@@ -1,0 +1,1 @@
+cmd_/home/unnar/Project4Embedded/part1/src/encoder_module/encoder.ko := ld -r -EL  -maarch64elf -z noexecstack --build-id=sha1  -T scripts/module.lds -o /home/unnar/Project4Embedded/part1/src/encoder_module/encoder.ko /home/unnar/Project4Embedded/part1/src/encoder_module/encoder.o /home/unnar/Project4Embedded/part1/src/encoder_module/encoder.mod.o;  true
