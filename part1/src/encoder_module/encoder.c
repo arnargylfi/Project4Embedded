@@ -48,14 +48,15 @@ static int __init erpi_gpio_init(void)
     irqNumber = gpio_to_irq(gpioEncoder);     // map GPIO to IRQ number
     printk(KERN_INFO "ENCODER: encoder mapped to IRQ: %d\n", irqNumber);
 
-    // This next call requests an interrupt line   
-    result = request_irq(irqNumber,          // interrupt number requested            
-        (irq_handler_t) erpi_gpio_irq_handler,   // handler function            
-        IRQF_TRIGGER_RISING,                     // on rising edge (press, not release)            
-        "erpi_gpio_handler",                     // used in /proc/interrupts
-        NULL);                                   // *dev_id for shared interrupt lines
+    // This next call requests an interrupt line    
+    result = request_irq(irqNumber,                     // interrupt number requested            
+        (irq_handler_t) erpi_gpio_irq_handler,          // handler function            
+        IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,     // on rising edge and falling edge            
+        "erpi_gpio_handler",                            // used in /proc/interrupts
+        NULL);                                          // *dev_id for shared interrupt lines
     printk(KERN_INFO "ENCODER: IRQ request result is: %d\n", result);
     return result;
+
 }
 
 static void __exit erpi_gpio_exit(void) 
