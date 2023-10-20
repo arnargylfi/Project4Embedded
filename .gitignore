@@ -1,3 +1,5 @@
+part1/src/polling/pollKernel
+part1/src/polling/pollRead
 part1/src/encoder_module/.Module.symvers.cmd
 part1/src/encoder_module/.encoder.ko.cmd
 part1/src/encoder_module/.encoder.mod.cmd
