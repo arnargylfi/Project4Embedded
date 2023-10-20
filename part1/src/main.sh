@@ -1,6 +1,7 @@
 #!/bin/bash
 #  Short script to toggle a GPIO pin at the highest frequency
 #  possible using Bash - by Derek Molloy
+
 echo 17 > /sys/class/gpio/export
 echo 27 > /sys/class/gpio/export
 sleep 0.5
