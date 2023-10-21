@@ -6,7 +6,7 @@ int main() {
     pwm.exit();
     pwm.init(100000);
 
-    for (int i = 0; i < 20000; i++) {
+    for (int i = 0; i < 100000; i++) {
         pwm.set(0.8);
     }
 
