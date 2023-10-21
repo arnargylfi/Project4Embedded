@@ -1,1 +1,0 @@
-cmd_/home/unnar/Project4Embedded/part2/src/encoder_module/Module.symvers :=  sed 's/ko$$/o/'  /home/unnar/Project4Embedded/part2/src/encoder_module/modules.order | scripts/mod/modpost -m -a    -o /home/unnar/Project4Embedded/part2/src/encoder_module/Module.symvers -e -i Module.symvers -T - 

@@ -1,1 +1,0 @@
-cmd_/home/unnar/Project4Embedded/part2/src/encoder_module/modules.order := {   echo /home/unnar/Project4Embedded/part2/src/encoder_module/encoder.ko; :; } > /home/unnar/Project4Embedded/part2/src/encoder_module/modules.order
