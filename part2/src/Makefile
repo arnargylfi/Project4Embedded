@@ -1,4 +1,4 @@
 all: controller
 
 controller: main.cpp
-	g++ -o controller main.cpp pwm.cpp
+	g++ -o controller main.cpp -Iinclude
