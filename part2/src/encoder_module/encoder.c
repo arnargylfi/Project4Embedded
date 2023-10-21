@@ -133,11 +133,6 @@ static irq_handler_t erpi_gpio_irq_handler(unsigned int irq,
     return (irq_handler_t) IRQ_HANDLED;      // announce IRQ handled 
 }
 
-asmlinkage int sys_get_pos(void){    //Getting the pos variable to be
-    return pos;                      //used in main file
-}
-
-SYSCALL_DEFINE0(get_pos);
 
 module_init(erpi_gpio_init);
 module_exit(erpi_gpio_exit);
