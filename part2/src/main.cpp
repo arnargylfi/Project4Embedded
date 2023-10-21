@@ -42,16 +42,26 @@ int get_speed(int pos) {
 }
 
 int main() {
-  Pwm motorIN1;
-  motorIN1.init();
-  while (true) {
-    int pos = syscall(SYS_get_pos); // reading the current position counter value
-    int actual_speed = get_speed(pos); // speed in rpm
-    duty_cycle = controller.update(ref_speed, actual_speed);
-    motorIN1.set(duty_cycle);
+    Pwm motorIN1;
+    motorIN1.init();
+    while (true) {
+        FILE *fp = fopen("/sys/kernel/custom_module/pos", "r");
+        if (!fp) {
+            perror("Failed to open sysfs entry");
+            exit(EXIT_FAILURE);
+        }
+        int pos;
+        fscanf(fp, "%d", &pos);
+        fclose(fp);
 
-    // print the actual speed at the control rate. 
-    printf("speed: (Ref: %d - Act: %d) [RPM], duty cycle: %d \n",ref_speed, actual_speed, duty_cycle);
-  }
+        int actual_speed = get_speed(pos); // speed in rpm
+        duty_cycle = controller.update(ref_speed, actual_speed);
+        motorIN1.set(duty_cycle);
+
+        // print the actual speed at the control rate. 
+        printf("speed: (Ref: %d - Act: %d) [RPM], duty cycle: %d \n",ref_speed, actual_speed, duty_cycle);
+        //printf("pos: %d \n",pos);
+    }
 }
+
 
