@@ -5,6 +5,7 @@
 #include <chrono>
 #include "pwm.h"
 #include "PI_controller.h"
+#include <algorithm>  // for std::clamp
 
 // Definitions for get_speed()
 int old_pos = 0;
@@ -13,15 +14,12 @@ unsigned long long last_time = 0;
 int speed_in_rpm = 0;
 
 // definitions for motor control
-double duty_cycle = 0.001;
+double duty_cycle = 0;
 int ref_speed = 60;
 
-// Digital_out motorIN2(0); // low     pin ?
-// Analog_out motorIN1(1);  // PWM     pin ?
-
 // PI controller
-float ti = 0.2095;
-float kp = 0.006;
+float ti = 0.5095;
+float kp = 0.106;
 PI_controller controller(kp,ti);
 
 
@@ -56,10 +54,11 @@ int main() {
 
         int actual_speed = get_speed(pos); // speed in rpm
         duty_cycle = controller.update(ref_speed, actual_speed);
+        duty_cycle = std::clamp(duty_cycle, 0.0, 1.0);
         motorIN1.set(duty_cycle);
 
         // print the actual speed at the control rate. 
-        printf("speed: (Ref: %d - Act: %d) [RPM], duty cycle: %d \n",ref_speed, actual_speed, duty_cycle);
+        printf("sped: (Ref: %d - Act: %d) [RPM], duty cycle: %f \n",ref_speed, actual_speed, duty_cycle);
         //printf("pos: %d \n",pos);
     }
 }
