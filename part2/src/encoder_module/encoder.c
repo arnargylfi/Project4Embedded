@@ -14,7 +14,7 @@ static unsigned int gpioLED = 17;             // pin 11 (GPIO17)
 static unsigned int gpioEncoderC1 = 23;          // (GPIO23) 
 static unsigned int gpioEncoderC2 = 24;          // (GPIO24) 
 static unsigned int irqNumber;                // share IRQ num within file 
-static unsigned int pos = 0;                //Pos value
+static int pos = 0;                             //Pos value
 static bool         ledOn = 0;                // used to invert state of LED
 
 
@@ -114,7 +114,7 @@ asmlinkage int sys_get_pos(void){    //Getting the pos variable to be
     return pos;                      //used in main file
 }
 
-SYSCALL_DEFINEO(get_pos);
+SYSCALL_DEFINE0(get_pos);
 
 module_init(erpi_gpio_init);
 module_exit(erpi_gpio_exit);

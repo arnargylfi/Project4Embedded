@@ -1,7 +1,4 @@
-obj-m+=encoder.o
+all: controller
 
-all:
-	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) modules
-
-clean:
-	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) clean
+controller: main.cpp
+	g++ -o controller main.cpp pwm.cpp

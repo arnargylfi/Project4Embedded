@@ -1,0 +1,1 @@
+cmd_/home/unnar/Project4Embedded/part2/src/encoder_module/encoder.mod := printf '%s\n'   encoder.o | awk '!x[$$0]++ { print("/home/unnar/Project4Embedded/part2/src/encoder_module/"$$0) }' > /home/unnar/Project4Embedded/part2/src/encoder_module/encoder.mod
