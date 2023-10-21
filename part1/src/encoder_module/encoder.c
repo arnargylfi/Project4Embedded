@@ -3,6 +3,7 @@
 #include <linux/kernel.h> 
 #include <linux/gpio.h>                       // for the GPIO functions 
 #include <linux/interrupt.h>                  // for the IRQ code
+#include <linux/syscalls.h>
 
 MODULE_LICENSE("GPL"); 
 MODULE_AUTHOR("Group 2 & 6"); 
