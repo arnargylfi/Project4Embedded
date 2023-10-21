@@ -47,7 +47,7 @@ class Pwm {
             }
 
             // echo 0 duty
-            set(0.5);
+            set(0.0001);
 
             // echo 1 í enable
             int enable_fd = open("/sys/class/pwm/pwmchip0/pwm0/enable", O_WRONLY);

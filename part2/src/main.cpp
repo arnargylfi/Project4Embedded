@@ -13,7 +13,7 @@ unsigned long long last_time = 0;
 int speed_in_rpm = 0;
 
 // definitions for motor control
-double duty_cycle = 0;
+double duty_cycle = 0.001;
 int ref_speed = 60;
 
 // Digital_out motorIN2(0); // low     pin ?
