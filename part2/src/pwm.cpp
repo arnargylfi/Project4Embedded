@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <cstring>
 
 Pwm::Pwm() {}
 
@@ -11,10 +12,9 @@ void Pwm::set(float duty_cycle) {
     // echo 0 í enable
     int enable_fd = open("enable", O_WRONLY);
     write(enable_fd, "0", 1);
-    close(enable_fd);
 
     // echo duty ns í 
-    duty_ns = (int)(duty_cycle * period);
+    int duty_ns = (int)(duty_cycle * period);
     sprintf(carray, "%d", duty_ns);
     
     int duty_cycle_fd = open("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", O_WRONLY);
@@ -22,7 +22,6 @@ void Pwm::set(float duty_cycle) {
     close(duty_cycle_fd);
 
     // echo 1 í enable
-    int enable_fd = open("enable", O_WRONLY);
     write(enable_fd, "1", 1);
     close(enable_fd);
 }

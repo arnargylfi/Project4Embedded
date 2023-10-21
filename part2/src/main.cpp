@@ -14,6 +14,7 @@ int speed_in_rpm = 0;
 
 // definitions for motor control
 double duty_cycle = 0;
+int ref_speed = 60;
 
 // Digital_out motorIN2(0); // low     pin ?
 // Analog_out motorIN1(1);  // PWM     pin ?
@@ -41,7 +42,7 @@ int get_speed(int pos) {
 }
 
 int main() {
-  Pwm motorIN1();
+  Pwm motorIN1;
   motorIN1.init();
   while (true) {
     int pos = syscall(SYS_get_pos); // reading the current position counter value
