@@ -3,7 +3,6 @@
 #include <linux/kernel.h> 
 #include <linux/gpio.h>                       // for the GPIO functions 
 #include <linux/interrupt.h>                  // for the IRQ code
-#include <linux/syscalls.h>
 
 MODULE_LICENSE("GPL"); 
 MODULE_AUTHOR("Group 2 & 6"); 
@@ -17,7 +16,13 @@ static unsigned int irqNumber;                // share IRQ num within file
 static int pos = 0;                             //Pos value
 static bool         ledOn = 0;                // used to invert state of LED
 
+static struct kobject *custom_kobj;
 
+static ssize_t pos_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
+    return sprintf(buf, "%d\n", pos);
+}
+
+static struct kobj_attribute pos_attribute = __ATTR_RO(pos);
 
 // prototype for the custom IRQ handler function, function below 
 static irq_handler_t  erpi_gpio_irq_handler(unsigned int irq, 
@@ -66,6 +71,21 @@ static int __init erpi_gpio_init(void)
         "erpi_gpio_handler",                            // used in /proc/interrupts
         NULL);                                          // *dev_id for shared interrupt lines
     printk(KERN_INFO "ENCODER: IRQ request result is: %d\n", result);
+    
+    // Create the sysfs entry
+    custom_kobj = kobject_create_and_add("custom_module", kernel_kobj);
+
+    if (!custom_kobj) {
+        printk(KERN_ALERT "Failed to create kobject for custom module\n");
+        return -ENOMEM;
+    }
+
+    if (sysfs_create_file(custom_kobj, &pos_attribute.attr)) {
+        printk(KERN_ALERT "Failed to create sysfs entry\n");
+        kobject_put(custom_kobj);
+        return -ENOMEM;
+    }
+
     return result;
 
 }
@@ -76,6 +96,9 @@ static void __exit erpi_gpio_exit(void)
     //        gpio_get_value(gpioEncoderC1));
     // printk(KERN_INFO "ENCODER: encoder value is currently: %d\n", 
     //        gpio_get_value(gpioEncoderC2));
+
+    sysfs_remove_file(custom_kobj, &pos_attribute.attr);
+    kobject_put(custom_kobj);
 
     printk(KERN_INFO "ENCODER: Current pos: %d\n", pos);
     gpio_set_value(gpioLED, 0);              // turn the LED off
