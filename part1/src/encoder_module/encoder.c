@@ -84,5 +84,11 @@ static irq_handler_t erpi_gpio_irq_handler(unsigned int irq,
     return (irq_handler_t) IRQ_HANDLED;      // announce IRQ handled 
 }
 
+asmlinkage int sys_get_num_pulses(void){    //Getting the num_pulse variable to be
+    return num_pulses;                      //used in main file
+}
+
+SYSCALL_DEFINEO(get_num_pulses);
+
 module_init(erpi_gpio_init);
 module_exit(erpi_gpio_exit);
