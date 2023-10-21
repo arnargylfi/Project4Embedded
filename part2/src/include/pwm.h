@@ -25,27 +25,38 @@ class Pwm {
         }
 
         void init(int period_ns = 100000) {
-            printf("INIT");
             period = period_ns;
             sprintf(carray, "%d", period_ns);
 
             // echo 0 í Export
             int export_fd = open("/sys/class/pwm/pwmchip0/export", O_WRONLY);
-            write(export_fd, "0", 1);
-            close(export_fd);
+            if (export_fd == -1) {
+                perror("Error opening export file");
+            } else {
+                write(export_fd, "0", 1);
+                close(export_fd);
+            }
 
             // echo into period
             int period_fd = open("/sys/class/pwm/pwmchip0/pwm0/period", O_WRONLY);
-            write(period_fd, carray, strlen(carray));
-            close(period_fd);
+            if (period_fd == -1) {
+                perror("Error opening period file");
+            } else {
+                write(period_fd, carray, strlen(carray));
+                close(period_fd);
+            }
 
             // echo 0 duty
             set(0.5);
 
             // echo 1 í enable
             int enable_fd = open("/sys/class/pwm/pwmchip0/pwm0/enable", O_WRONLY);
-            write(enable_fd, "1", 1);
-            close(enable_fd);
+            if (enable_fd == -1) {
+                perror("Error opening enable file");
+            } else {
+                write(enable_fd, "1", 1);
+                close(enable_fd);
+            }
         }
 
         void exit() {
