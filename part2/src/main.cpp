@@ -6,6 +6,7 @@
 #include "pwm.h"
 #include "PI_controller.h"
 #include <algorithm>  // for std::clamp
+#include <fcntl.h>
 
 // Definitions for get_speed()
 int old_pos = 0;
@@ -15,11 +16,11 @@ int speed_in_rpm = 0;
 
 // definitions for motor control
 double duty_cycle = 0;
-int ref_speed = 60;
+int ref_speed = 30;
 
 // PI controller
-float ti = 0.5095;
-float kp = 0.106;
+float ti = 0.2095;
+float kp = 0.001;
 PI_controller controller(kp,ti);
 
 
@@ -62,5 +63,3 @@ int main() {
         //printf("pos: %d \n",pos);
     }
 }
-
-
