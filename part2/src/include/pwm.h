@@ -1,6 +1,6 @@
 #ifndef PWM_H
 #define PWM_H
-#include "pwm.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -13,10 +13,6 @@ class Pwm {
 
         void set(float duty_cycle) {
 
-            // echo 0 í enable
-            int enable_fd = open("enable", O_WRONLY);
-            write(enable_fd, "0", 1);
-
             // echo duty ns í 
             int duty_ns = (int)(duty_cycle * period);
             sprintf(carray, "%d", duty_ns);
@@ -25,12 +21,11 @@ class Pwm {
             write(duty_cycle_fd, carray, strlen(carray));
             close(duty_cycle_fd);
 
-            // echo 1 í enable
-            write(enable_fd, "1", 1);
-            close(enable_fd);
+            
         }
 
         void init(int period_ns = 100000) {
+            printf("INIT");
             period = period_ns;
             sprintf(carray, "%d", period_ns);
 
@@ -46,9 +41,17 @@ class Pwm {
 
             // echo 0 duty
             set(0.5);
+
+            // echo 1 í enable
+            int enable_fd = open("/sys/class/pwm/pwmchip0/pwm0/enable", O_WRONLY);
+            write(enable_fd, "1", 1);
+            close(enable_fd);
         }
 
         void exit() {
+            int enable_fd = open("/sys/class/pwm/pwmchip0/pwm0/enable", O_WRONLY);
+            write(enable_fd, "0", 1);
+            close(enable_fd);
             // echo 0 í unexport
             int unexport_fd = open("/sys/class/pwm/pwmchip0/unexport", O_WRONLY);
             write(unexport_fd, "0", 1);
